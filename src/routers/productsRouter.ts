@@ -3,6 +3,8 @@ import * as productsController from '../controllers/productsController';
 
 const productsRouter = Router();
 
-productsRouter.post('/', productsController.default);
+productsRouter.post('/', productsController.registerProduct);
+
+productsRouter.get('/', productsController.listProducts);
 
 export default productsRouter;

@@ -23,3 +23,11 @@ export async function findProduct(name: string): Promise<IProduct | null> {
   const [product] = result as IProduct[];
   return product || null;
 }
+
+export async function listProducts() {
+  const query = 'SELECT * FROM Trybesmith.products;';
+
+  const [result] = await connection.execute(query);
+  const productsList = result as IProduct[];
+  return productsList || null;
+}
