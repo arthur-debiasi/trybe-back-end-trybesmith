@@ -8,4 +8,6 @@
 //   NO_CONTENT: 204,
 // };
 
-// export default (type: string) => statusMap[type] || 500;
+// export default function mapStatus(type: string):number {
+//   return statusMap[type] || 500;
+// } 
