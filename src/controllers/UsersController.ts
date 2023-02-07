@@ -12,5 +12,6 @@ export default async function registerUser(req: Request, res: Response) {
     level,
     password,
   });
+  if (type !== 201) return res.status(type).json({ message });
   return res.status(type).json({ token: message });
 }
