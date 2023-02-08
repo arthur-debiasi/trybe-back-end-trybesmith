@@ -6,7 +6,7 @@ import { productsValidation } from './validations/inputValidation';
 export default class ProductsService {
   private model: ProductsModel;
 
-  constructor(model: ProductsModel) {
+  constructor(model: ProductsModel = new ProductsModel()) {
     this.model = model;
   }
 

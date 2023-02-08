@@ -5,13 +5,13 @@ import { IUser } from '../interfaces';
 export default class UsersModel {
   private connection: Pool;
 
-  constructor(conn: Pool) {
+  constructor(conn: Pool = connection) {
     this.connection = conn;
   }
 
   public findUser = async (username: string) => {
     const query = 'SELECT * FROM Trybesmith.users WHERE username = ?;';
-    const [user] = await connection.execute(query, [username]);
+    const [user] = await this.connection.execute(query, [username]);
     console.log(user);
     
     return user as IUser[];

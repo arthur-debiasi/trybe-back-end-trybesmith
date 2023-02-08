@@ -8,7 +8,10 @@ export default class OrdersService {
 
   private productsModel: ProductsModel;
 
-  constructor(ordersModel: OrdersModel, productsModel: ProductsModel) {
+  constructor(
+    ordersModel: OrdersModel = new OrdersModel(),
+    productsModel: ProductsModel = new ProductsModel(),
+  ) {
     this.ordersModel = ordersModel;
     this.productsModel = productsModel;
   }
@@ -16,10 +19,11 @@ export default class OrdersService {
   public listOrders = async () => {
     const orders = await this.ordersModel.listOrders();
     const products = await this.productsModel.listProducts();
-  
+
     const ordersWithProductsIds = orders.map((order) => {
       const productsIds = products
-        .filter((product) => product.orderId === order.id).map((e: IProduct) => e.id);       
+        .filter((product) => product.orderId === order.id)
+        .map((e: IProduct) => e.id);
       return {
         ...order,
         productsIds,
@@ -31,7 +35,7 @@ export default class OrdersService {
   public registerOrders = async (userId: number, productsIds: number[]) => {
     const { error } = productsIdsSchema.validate(productsIds);
     console.log(error);
-    
+
     if (error) return { type: 422, message: error.message };
     const orderId = await this.ordersModel.registerOrder(userId);
     await this.productsModel.updateProducts(productsIds, orderId);

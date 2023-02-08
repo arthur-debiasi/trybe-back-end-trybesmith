@@ -1,36 +1,33 @@
 import { Pool, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 // import connection from './connection';
 import { IProduct } from '../interfaces';
+import connection from './connection';
 
 export default class ProductsModel {
-  private connection: Pool;
-
-  constructor(connection: Pool) {
-    this.connection = connection;
-  }
+  constructor(private conn: Pool = connection) { }
   
   public listProducts = async (): Promise<IProduct[]> => {
     const query = 'SELECT id, name, amount, order_id as orderId FROM Trybesmith.products;';
-    const [products] = await this.connection.execute(query);
+    const [products] = await this.conn.execute(query);
     return products as IProduct[];
   };
 
   public findProductByName = async (name: string): Promise<RowDataPacket[] | IProduct> => {
     const query = 'SELECT * FROM Trybesmith.products WHERE name = ?;';
-    const [product] = await this.connection.execute(query, [name]);
+    const [product] = await this.conn.execute(query, [name]);
     return product as RowDataPacket[] | IProduct;
   };
 
   public registerProduct = async (product : IProduct) => {
     const { name, amount } = product;
     const query = 'INSERT INTO Trybesmith.products (name, amount) VALUES (?, ?)';
-    const [{ insertId }] = await this.connection.execute<ResultSetHeader>(query, [name, amount]);
+    const [{ insertId }] = await this.conn.execute<ResultSetHeader>(query, [name, amount]);
     return insertId;
   };
 
   public updateProducts = async (productsIds : number[], orderId: number) => {
     const query = 'UPDATE Trybesmith.products SET order_id = ? WHERE id = ?';
-    const promises = productsIds.map((e) => this.connection.execute(query, [orderId, e]));
+    const promises = productsIds.map((e) => this.conn.execute(query, [orderId, e]));
     Promise.all(promises);
   };
 }

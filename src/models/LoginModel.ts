@@ -3,16 +3,12 @@ import { ILogin, IUser } from '../interfaces';
 import connection from './connection';
 
 export default class LoginModel {
-  private connection: Pool;
-
-  constructor(conn: Pool = connection) {
-    this.connection = conn;
-  }
+  constructor(private conn: Pool = connection) {}
 
   public login = async ({ username, password }:ILogin) => {
     const query = `
     SELECT * FROM Trybesmith.users WHERE username = ? AND password = ?;`;
-    const [user] = await connection.execute<RowDataPacket[]>(query, [username, password]);
+    const [user] = await this.conn.execute<RowDataPacket[]>(query, [username, password]);
     return user as IUser[];
   };
 }

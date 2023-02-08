@@ -4,11 +4,7 @@ import ProductsService from '../services/ProductsService';
 // import mapStatus from '../utils/mapStatus';
 
 export default class ProductsController {
-  private service: ProductsService;
-
-  constructor(service: ProductsService) {
-    this.service = service;
-  }
+  constructor(private service: ProductsService = new ProductsService()) { }
 
   public listProducts = async (_req: Request, res: Response) => {
     const products = await this.service.listProducts();

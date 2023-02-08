@@ -1,13 +1,8 @@
 import { Request, Response } from 'express';
 import LoginService from '../services/LoginService';
-// import mapStatus from '../utils/mapStatus';
 
 export default class LoginController {
-  private service: LoginService;
-
-  constructor(service: LoginService) {
-    this.service = service;
-  }
+  constructor(private service: LoginService = new LoginService()) { }
 
   public login = async (req:Request, res: Response) => {
     const { type, message } = await this.service.login(req.body);

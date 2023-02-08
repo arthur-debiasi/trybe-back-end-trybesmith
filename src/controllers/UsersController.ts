@@ -2,11 +2,7 @@ import { Request, Response } from 'express';
 import UsersService from '../services/UsersService';
 
 export default class UsersController {
-  private service: UsersService;
-
-  constructor(service: UsersService) {
-    this.service = service;
-  }
+  constructor(private service: UsersService = new UsersService()) {}
 
   public registerUser = async (req:Request, res: Response) => {
     try {

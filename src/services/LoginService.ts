@@ -3,12 +3,10 @@ import LoginModel from '../models/LoginModel';
 import JwtToken from '../utils/jwt';
 
 export default class LoginService {
-  private jwtToken: JwtToken;
-
-  constructor(private model: LoginModel = new LoginModel()) {
-    this.model = model;
-    this.jwtToken = new JwtToken();
-  }
+  constructor(
+    private model: LoginModel = new LoginModel(),
+    private jwtToken: JwtToken = new JwtToken(),
+  ) {}
 
   public login = async (login: ILogin) => {
     const [user] = await this.model.login(login);

@@ -5,14 +5,10 @@ import UsersModel from '../models/UsersModel';
 import JwtToken from '../utils/jwt';
 
 export default class UsersService {
-  private model: UsersModel;
-
-  private jwtToken: JwtToken;
-
-  constructor(model: UsersModel) {
-    this.model = model;
-    this.jwtToken = new JwtToken();
-  }
+  constructor(
+    private model: UsersModel = new UsersModel(),
+    private jwtToken: JwtToken = new JwtToken(),
+  ) {}
 
   public registerUser = async (user: IUser) => {
     const { type, message } = usersValidation(user);
@@ -23,7 +19,7 @@ export default class UsersService {
     }
     await this.model.registerUser(user);
     const token = this.jwtToken.generate(user);
-    
+
     return { type: null, message: token };
   };
 }
