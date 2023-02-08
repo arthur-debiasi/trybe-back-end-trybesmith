@@ -1,4 +1,4 @@
-import { Pool } from 'mysql2/promise';
+import { Pool, ResultSetHeader } from 'mysql2/promise';
 import connection from './connection';
 import { IOrder } from '../interfaces';
 
@@ -13,6 +13,12 @@ export default class OrdersModel {
     const query = 'SELECT id, user_id AS userId FROM Trybesmith.orders;';
     const [orders] = await connection.execute(query);
     return orders as IOrder[];
+  };
+
+  public registerOrder = async (order:IOrder): Promise<number> => {
+    const query = 'INSERT INTO TrybeSmith.orders (user_id) VALUE (?);';
+    const [{ insertId }] = await this.connection.execute<ResultSetHeader>(query, [order.userId]);
+    return insertId;
   };
 }
 // export default async function listOrders() {

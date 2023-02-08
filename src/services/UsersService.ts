@@ -1,14 +1,17 @@
 import { IUser } from '../interfaces';
-import jwtGenerate from './jwtGenerate';
 import { usersValidation } from './validations/inputValidation';
 
 import UsersModel from '../models/UsersModel';
+import JwtToken from '../utils/jwt';
 
 export default class UsersService {
   private model: UsersModel;
 
+  private jwtToken: JwtToken;
+
   constructor(model: UsersModel) {
     this.model = model;
+    this.jwtToken = new JwtToken();
   }
 
   public registerUser = async (user: IUser) => {
@@ -19,7 +22,7 @@ export default class UsersService {
       return { type: 400, message: 'Username already exists' };
     }
     await this.model.registerUser(user);
-    const token = jwtGenerate(user);
+    const token = this.jwtToken.generate(user);
     
     return { type: null, message: token };
   };

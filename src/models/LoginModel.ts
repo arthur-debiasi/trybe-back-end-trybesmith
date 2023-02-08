@@ -1,5 +1,5 @@
-import { Pool } from 'mysql2/promise';
-import { ILogin } from '../interfaces';
+import { Pool, RowDataPacket } from 'mysql2/promise';
+import { ILogin, IUser } from '../interfaces';
 import connection from './connection';
 
 export default class LoginModel {
@@ -12,8 +12,8 @@ export default class LoginModel {
   public login = async ({ username, password }:ILogin) => {
     const query = `
     SELECT * FROM Trybesmith.users WHERE username = ? AND password = ?;`;
-    const [user] = await connection.execute(query, [username, password]);
-    return user as ILogin[];
+    const [user] = await connection.execute<RowDataPacket[]>(query, [username, password]);
+    return user as IUser[];
   };
 }
 

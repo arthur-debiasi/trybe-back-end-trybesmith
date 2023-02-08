@@ -15,10 +15,7 @@ export interface IUser {
 
 export interface IOrder {
   id?: number;
-  username: string;
-  vocation: string;
-  level: number;
-  password: string;
+  userId: number;
 }
 export interface ILogin {
   username: string;
