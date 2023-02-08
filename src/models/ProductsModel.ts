@@ -27,6 +27,12 @@ export default class ProductsModel {
     const [{ insertId }] = await this.connection.execute<ResultSetHeader>(query, [name, amount]);
     return insertId;
   };
+
+  public updateProducts = async (productsIds : number[], orderId: number) => {
+    const query = 'UPDATE Trybesmith.products SET order_id = ? WHERE id = ?';
+    const promises = productsIds.map((e) => this.connection.execute(query, [orderId, e]));
+    Promise.all(promises);
+  };
 }
 
 // export async function registerProduct(product: IProduct): Promise<IProduct> {

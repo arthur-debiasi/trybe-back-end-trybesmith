@@ -3,21 +3,22 @@ import connection from './connection';
 import { IOrder } from '../interfaces';
 
 export default class OrdersModel {
-  private connection: Pool;
+  // private connection: Pool;
 
-  constructor(conn: Pool) {
-    this.connection = conn;
-  }
+  // constructor(conn: Pool) {
+  //   this.connection = conn;
+  // }
+  constructor(private conn: Pool = connection) {}
 
   public listOrders = async (): Promise<IOrder[]> => {
     const query = 'SELECT id, user_id AS userId FROM Trybesmith.orders;';
-    const [orders] = await connection.execute(query);
+    const [orders] = await this.conn.execute(query);
     return orders as IOrder[];
   };
 
-  public registerOrder = async (order:IOrder): Promise<number> => {
-    const query = 'INSERT INTO TrybeSmith.orders (user_id) VALUE (?);';
-    const [{ insertId }] = await this.connection.execute<ResultSetHeader>(query, [order.userId]);
+  public registerOrder = async (userId:number): Promise<number> => {
+    const query = 'INSERT INTO Trybesmith.orders (user_id) VALUE (?);';
+    const [{ insertId }] = await this.conn.execute<ResultSetHeader>(query, [userId]);
     return insertId;
   };
 }

@@ -14,3 +14,10 @@ export const userSchema = Joi.object({
   level: Joi.number().min(1).required(),
   password: Joi.string().min(8).required(),
 });
+
+export const productsIdsSchema = Joi.array()
+  .items(Joi.number().required())
+  .label('productsIds')
+  .messages({
+    'array.includesRequiredUnknowns': '{{#label}} must include only numbers',
+  });

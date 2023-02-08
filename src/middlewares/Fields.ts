@@ -36,6 +36,13 @@ export default class Fields {
     }
     next();
   };
+
+  public orders = async (req:Request, res: Response, next: NextFunction) => {
+    if (!req.body.productsIds) {
+      return res.status(400).json({ message: '"productsIds" is required' });
+    }
+    next();
+  };
 }
 
 // export default function loginFields(

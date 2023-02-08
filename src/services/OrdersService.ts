@@ -1,6 +1,7 @@
 import { IProduct } from '../interfaces';
 import OrdersModel from '../models/OrdersModel';
 import ProductsModel from '../models/ProductsModel';
+import { productsIdsSchema } from './validations/schemas';
 
 export default class OrdersService {
   private ordersModel: OrdersModel;
@@ -25,6 +26,16 @@ export default class OrdersService {
       };
     });
     return ordersWithProductsIds;
+  };
+
+  public registerOrders = async (userId: number, productsIds: number[]) => {
+    const { error } = productsIdsSchema.validate(productsIds);
+    console.log(error);
+    
+    if (error) return { type: 422, message: error.message };
+    const orderId = await this.ordersModel.registerOrder(userId);
+    await this.productsModel.updateProducts(productsIds, orderId);
+    return { type: 0, message: '' };
   };
 }
 

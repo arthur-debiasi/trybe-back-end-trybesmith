@@ -5,7 +5,7 @@ import connection from './connection';
 export default class LoginModel {
   private connection: Pool;
 
-  constructor(conn: Pool) {
+  constructor(conn: Pool = connection) {
     this.connection = conn;
   }
 

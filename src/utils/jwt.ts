@@ -12,7 +12,7 @@ export default class JwtToken {
   private jwtConfig: SignOptions;
 
   constructor() {
-    this.JWT_SECRET = process.env.JWT_SECRET || ('mangeiga' as Secret);
+    this.JWT_SECRET = process.env.JWT_SECRET || ('manteiga' as Secret);
     this.jwtConfig = {
       expiresIn: '6h',
       algorithm: 'HS256',

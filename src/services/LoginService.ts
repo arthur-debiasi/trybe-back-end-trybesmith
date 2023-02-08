@@ -3,11 +3,9 @@ import LoginModel from '../models/LoginModel';
 import JwtToken from '../utils/jwt';
 
 export default class LoginService {
-  private model: LoginModel;
-
   private jwtToken: JwtToken;
 
-  constructor(model: LoginModel) {
+  constructor(private model: LoginModel = new LoginModel()) {
     this.model = model;
     this.jwtToken = new JwtToken();
   }
