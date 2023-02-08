@@ -4,9 +4,11 @@ import { productSchema, userSchema } from './schemas';
 
 export function productsValidation(product: IProduct) {
   const { error } = productSchema.validate(product);
+ 
   if (error) {
-    return { type: 422, message: { message: error.message } };
+    return { type: 422, message: error.message };
   }
+  
   return { type: null, message: '' };
 }
 
@@ -15,5 +17,5 @@ export function usersValidation(product: IUser) {
   if (error) {
     return { type: 422, message: error.message };
   }
-  return { type: 201, message: '' };
+  return { type: null, message: '' };
 }

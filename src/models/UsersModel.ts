@@ -1,31 +1,58 @@
-import { ResultSetHeader } from 'mysql2';
-
+import { Pool } from 'mysql2/promise';
 import connection from './connection';
 import { IUser } from '../interfaces';
 
-export async function registerUser(user: IUser): Promise<IUser> {
-  const {
-    username,
-    vocation,
-    level,
-    password,
-  } = user;
+export default class UsersModel {
+  private connection: Pool;
 
-  const query = `
-  INSERT INTO Trybesmith.users (username, vocation, level, password) VALUES (?, ?, ?, ?)`;
-  const values = [username, vocation, level, password];
+  constructor(conn: Pool) {
+    this.connection = conn;
+  }
 
-  const [result] = await connection.execute<ResultSetHeader>(query, values);
-  const { insertId: id } = result;
+  public findUser = async (username: string) => {
+    const query = 'SELECT * FROM Trybesmith.users WHERE username = ?;';
+    const [user] = await connection.execute(query, [username]);
+    console.log(user);
+    
+    return user as IUser[];
+  };
 
-  const newProduct: IUser = { id, username, vocation, level, password };
-  return newProduct;
+  public registerUser = async (user: IUser) => {
+    const { username, vocation, level, password } = user;
+    const query = `
+    INSERT INTO Trybesmith.users (username, vocation, level, password) VALUES (?, ?, ?, ?)`;
+    await this.connection.execute(query, [
+      username,
+      vocation,
+      level,
+      password,
+    ]);
+  };
 }
 
-export async function findUser(username: string): Promise<IUser | null> {
-  const query = 'SELECT * FROM Trybesmith.users WHERE username = ?;';
+// export async function findUser(username: string): Promise<IUser | null> {
+//   const query = 'SELECT * FROM Trybesmith.users WHERE username = ?;';
 
-  const [result] = await connection.execute(query, [username]);
-  const [product] = result as IUser[];
-  return product || null;
-}
+//   const [result] = await connection.execute(query, [username]);
+//   const [product] = result as IUser[];
+//   return product || null;
+// }
+
+// export async function registerUser(user: IUser): Promise<IUser> {
+//   const {
+//     username,
+//     vocation,
+//     level,
+//     password,
+//   } = user;
+
+//   const query = `
+//   INSERT INTO Trybesmith.users (username, vocation, level, password) VALUES (?, ?, ?, ?)`;
+//   const values = [username, vocation, level, password];
+
+//   const [result] = await connection.execute<ResultSetHeader>(query, values);
+//   const { insertId: id } = result;
+
+//   const newProduct: IUser = { id, username, vocation, level, password };
+//   return newProduct;
+// }
