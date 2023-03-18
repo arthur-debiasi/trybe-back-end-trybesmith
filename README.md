@@ -4,6 +4,8 @@
 
 RESTful API for a medieval item shop made with Node.js and TypeScript.
 
+This RESTful API for a medieval item shop was built with Node.js and TypeScript to manage login, transactions, and customer data.
+
 ## 🚀 Built With
 
 > [![Node.js][Node.js]][Node.js-url][![MySQL][MySQL]][MySQL-url][![Typescript][Typescript]][Typescript-url]
